@@ -1,15 +1,93 @@
-# Operating System files
-.DS_Store
-Thumbs.db
+# ==============================================================================
+# Modern Cryptography Course - Comprehensive .gitignore
+# Prevents accidental leaks of credentials, sensitive data, build & OS artifacts
+# ==============================================================================
 
-# Node dependencies and build artifacts
+# ------------------------------------------------------------------------------
+# 1. Operating System & Local Environment Artifacts
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------------------------------------
+# 2. Security & Credentials (CRITICAL: CANNOT BE SHARED PUBLICLY)
+# ------------------------------------------------------------------------------
+# Secrets, tokens, and environment variables
+*.env
+*.env.*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*token*.json
+*token*.txt
+*secret*.json
+*secret*.txt
+*credential*.json
+
+# Certificates, Private Keys & Keyrings
+*.pem
+*.key
+*.pkcs12
+*.pfx
+*.p12
+*.crt
+*.cert
+id_rsa*
+id_ecdsa*
+id_ed25519*
+*.kdbx
+
+# Cloud & Service Account Keys
+serviceAccountKey*.json
+*service-account*.json
+google-services.json
+GoogleService-Info.plist
+
+# ------------------------------------------------------------------------------
+# 3. Tunneling, Ingress & Network Logs (ngrok / proxies)
+# ------------------------------------------------------------------------------
+.ngrok/
+ngrok.log
+ngrok.yml
+ngrok.conf
+
+# ------------------------------------------------------------------------------
+# 4. Node.js & Web Build Artifacts
+# ------------------------------------------------------------------------------
 node_modules/
 dist/
 build/
-.npm
+out/
+.npm/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.vite/
+.turbo/
+.cache/
 
-# Python cache and bytecode
+# ------------------------------------------------------------------------------
+# 5. Firebase & Deployment Caches
+# ------------------------------------------------------------------------------
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
+# ------------------------------------------------------------------------------
+# 6. Python Bytecode, Caches & Virtual Environments
+# ------------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
@@ -19,15 +97,43 @@ env/
 venv/
 ENV/
 .venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.eggs/
 
-# IDE and Editor files
-.vscode/
+# ------------------------------------------------------------------------------
+# 7. IDE & Editor Specific Metadata
+# ------------------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea/
+*.sublime-workspace
+*.sublime-project
 *.swp
 *.swo
 *~
+*.bak
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# ------------------------------------------------------------------------------
+# 8. Temporary Media & Scratch Artifacts
+# ------------------------------------------------------------------------------
+.tempmediaStorage/
+scratch/
+tmp/
+temp/
+
+# ------------------------------------------------------------------------------
+# 9. Custom Repository Exclusions
+# ------------------------------------------------------------------------------
+.github/instructions/codacy.instructions.md
+
+# NOTE FOR COURSE INSTRUCTORS:
+# If you plan to make this repo public for students and want to withhold
+# exercise solutions, uncomment the following line:
+# **/exercises_instructor.py
