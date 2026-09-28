@@ -69,6 +69,7 @@ export default function App() {
 
   const chatBottomRef = useRef(null);
   const socketRef = useRef(null);
+  const broadcastRef = useRef(null);
 
   // Fetch host network discovery details from Express
   const fetchNetworkInfo = (targetUrl) => {
@@ -102,6 +103,67 @@ export default function App() {
       ...prev
     }));
   }, []);
+
+  // Native Browser BroadcastChannel for 100% Offline / Standalone Tab-to-Tab Sync
+  useEffect(() => {
+    if (typeof BroadcastChannel !== 'undefined') {
+      const bc = new BroadcastChannel('crypto_chat_offline_channel');
+      broadcastRef.current = bc;
+
+      bc.onmessage = (event) => {
+        const data = event.data;
+        if (!data || !data.type) return;
+
+        if (data.type === 'peer-register') {
+          setActiveUsers((prev) => {
+            if (prev.some(u => u.username === data.username)) return prev;
+            return [...prev, { username: data.username, role: data.role }];
+          });
+          if (data.publicKey && data.username) {
+            setPublicDirectory((prev) => ({ ...prev, [data.username]: data.publicKey }));
+          }
+          if (currentUser) {
+            bc.postMessage({
+              type: 'peer-announce',
+              username: currentUser,
+              role: userRole,
+              publicKey: myRsaKeys ? myRsaKeys.publicKey : null
+            });
+          }
+        } else if (data.type === 'peer-announce') {
+          setActiveUsers((prev) => {
+            if (prev.some(u => u.username === data.username)) return prev;
+            return [...prev, { username: data.username, role: data.role }];
+          });
+          if (data.publicKey && data.username) {
+            setPublicDirectory((prev) => ({ ...prev, [data.username]: data.publicKey }));
+          }
+        } else if (data.type === 'receive-message') {
+          const msg = data.message;
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === msg.id)) return prev;
+            return [...prev, msg];
+          });
+          setWireLogs((prev) => {
+            const existingIdx = prev.findIndex(item => item.id === msg.id);
+            if (existingIdx !== -1) {
+              const updated = [...prev];
+              updated[existingIdx] = msg;
+              return updated;
+            }
+            return [msg, ...prev];
+          });
+        } else if (data.type === 'mitm-tamper') {
+          setMessages((prev) => prev.map(m => m.id === data.messageId ? { ...m, ciphertext: data.tamperedCiphertext, status: 'TAMPERED', isTampered: true } : m));
+          setWireLogs((prev) => prev.map(m => m.id === data.messageId ? { ...m, ciphertext: data.tamperedCiphertext, status: 'TAMPERED', isTampered: true } : m));
+        }
+      };
+
+      return () => {
+        bc.close();
+      };
+    }
+  }, [currentUser, userRole, myRsaKeys]);
 
   // Establish & Manage Socket.IO Connection (supports custom server, ngrok WSS, or local)
   useEffect(() => {
@@ -229,6 +291,15 @@ export default function App() {
         publicKey: currentKeys ? currentKeys.publicKey : null 
       });
     }
+
+    if (broadcastRef.current) {
+      broadcastRef.current.postMessage({
+        type: 'peer-register',
+        username: cleanName,
+        role,
+        publicKey: currentKeys ? currentKeys.publicKey : null
+      });
+    }
   };
 
   const handleGenerateNewRsaKeys = () => {
@@ -239,10 +310,18 @@ export default function App() {
         ...prev,
         [currentUser]: keys.publicKey
       }));
-      // Broadcast new public key to all participants over Socket.IO
+      // Broadcast new public key to all participants over Socket.IO and BroadcastChannel
       if (socketRef.current) {
         socketRef.current.emit('publish-public-key', {
           username: currentUser,
+          publicKey: keys.publicKey
+        });
+      }
+      if (broadcastRef.current) {
+        broadcastRef.current.postMessage({
+          type: 'peer-announce',
+          username: currentUser,
+          role: userRole,
           publicKey: keys.publicKey
         });
       }
@@ -271,7 +350,7 @@ export default function App() {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (!inputText.trim() || !currentUser || !socketRef.current) return;
+    if (!inputText.trim() || !currentUser) return;
 
     const isBroadcast = selectedRecipient === 'Classroom Broadcast';
 
@@ -303,17 +382,34 @@ export default function App() {
     }
 
     const payload = {
+      id: 'MSG-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
       sender: currentUser,
       recipient: selectedRecipient,
       isBroadcast: isBroadcast,
       ciphertext: encryptedPayload,
       cipherType: cipherType,
       key: cipherKey,
+      timestamp: new Date().toLocaleTimeString(),
+      status: activeMitmIntercept ? 'INTERCEPTED' : 'DELIVERED',
+      isTampered: false,
+      isSpoofed: false,
       rsaPublicKey: isBroadcast ? null : (publicDirectory[selectedRecipient] || null),
       plaintextSent: inputText
     };
 
-    socketRef.current.emit('send-message', payload);
+    if (socketConnected && socketRef.current) {
+      socketRef.current.emit('send-message', payload);
+    } else {
+      // Standalone Offline mode (tab-to-tab)
+      setMessages((prev) => [...prev, payload]);
+      setWireLogs((prev) => [payload, ...prev]);
+      if (broadcastRef.current) {
+        broadcastRef.current.postMessage({
+          type: 'receive-message',
+          message: payload
+        });
+      }
+    }
     setInputText('');
   };
 
@@ -456,8 +552,8 @@ export default function App() {
               )}
 
               {/* Protocol Badges */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.3)', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', color: '#60A5FA', fontWeight: '600' }}>
-                <Wifi size={13} /> WSS WebSocket: Active
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: socketConnected ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)', border: `1px solid ${socketConnected ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, padding: '6px 12px', borderRadius: '20px', fontSize: '11px', color: socketConnected ? '#10B981' : '#F59E0B', fontWeight: '600' }}>
+                <Wifi size={13} /> {socketConnected ? 'Server: Connected (Live Socket)' : 'Offline / Standalone Mode (Tab-to-Tab Sync Active)'}
               </div>
 
               <div 
@@ -679,6 +775,10 @@ export default function App() {
           >
             <RadioTower size={12} /> MQTT: 1883
           </button>
+
+          <div style={{ background: socketConnected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)', border: `1px solid ${socketConnected ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`, padding: '5px 10px', borderRadius: '20px', fontSize: '11px', color: socketConnected ? '#10B981' : '#F59E0B', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Wifi size={12} /> {socketConnected ? 'Server Live' : 'Tab Sync'}
+          </div>
 
           <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.08)', padding: '5px 12px', borderRadius: '30px', fontSize: '12px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Users size={13} color="#10B981" /> Online: <strong style={{ color: '#10B981' }}>{activeUsers.length || 1}</strong>
