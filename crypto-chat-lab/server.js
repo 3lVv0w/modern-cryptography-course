@@ -361,6 +361,7 @@ io.on('connection', (socket) => {
       if (action === 'APPROVE') {
         msg.status = 'DELIVERED';
         publishToMqtt(msg);
+        io.to('instructor_room').emit('new-wire-log', msg);
         if (msg.isBroadcast || msg.recipient === 'Classroom Broadcast') {
           io.emit('receive-message', msg);
         } else {
@@ -369,10 +370,11 @@ io.on('connection', (socket) => {
         }
         console.log(`[MITM RELEASED] ${msg.id} delivered`);
       } else if (action === 'TAMPER') {
-        msg.ciphertext = tamperedCiphertext;
+        msg.ciphertext = tamperedCiphertext || msg.ciphertext;
         msg.status = 'TAMPERED';
         msg.isTampered = true;
         publishToMqtt(msg);
+        io.to('instructor_room').emit('new-wire-log', msg);
         if (msg.isBroadcast || msg.recipient === 'Classroom Broadcast') {
           io.emit('receive-message', msg);
         } else {
@@ -382,6 +384,7 @@ io.on('connection', (socket) => {
         console.log(`[MITM TAMPERED] ${msg.id} modified and released`);
       } else if (action === 'DROP') {
         msg.status = 'DROPPED';
+        io.to('instructor_room').emit('new-wire-log', msg);
         console.log(`[MITM DROPPED] ${msg.id} destroyed by instructor`);
       }
     }

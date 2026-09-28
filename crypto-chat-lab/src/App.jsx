@@ -147,7 +147,15 @@ export default function App() {
     });
 
     socket.on('new-wire-log', (logItem) => {
-      setWireLogs((prev) => [logItem, ...prev]);
+      setWireLogs((prev) => {
+        const existingIdx = prev.findIndex(item => item.id === logItem.id);
+        if (existingIdx !== -1) {
+          const updated = [...prev];
+          updated[existingIdx] = logItem;
+          return updated;
+        }
+        return [logItem, ...prev];
+      });
     });
 
     socket.on('intercept-mode-changed', ({ activeMitmIntercept }) => {
@@ -359,17 +367,20 @@ export default function App() {
     socketRef.current.emit('mitm-toggle-intercept', { enabled: nextState });
   };
 
-  const handleProcessQueuedMessage = (messageId, action) => {
+  const handleProcessQueuedMessage = (messageId, action, fallbackText = '') => {
     if (!socketRef.current) return;
     socketRef.current.emit('mitm-process-queued-message', {
       messageId,
       action,
-      tamperedCiphertext: tamperInput
+      tamperedCiphertext: tamperInput.trim() ? tamperInput : fallbackText
     });
     setTamperInput('');
   };
 
   const getDecryptedTextForStudent = (msg) => {
+    if (msg.isTampered) {
+      return msg.ciphertext;
+    }
     if (msg.sender === currentUser) return msg.plaintextSent || msg.ciphertext;
     if (msg.ciphertext.startsWith('RSA-CIPHER:')) {
       if (myRsaKeys) {
@@ -978,7 +989,7 @@ export default function App() {
                           <button className="btn-primary" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => handleProcessQueuedMessage(item.id, 'APPROVE')}>
                             Release
                           </button>
-                          <button className="btn-amber" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => handleProcessQueuedMessage(item.id, 'TAMPER')}>
+                          <button className="btn-amber" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => handleProcessQueuedMessage(item.id, 'TAMPER', item.ciphertext)}>
                             Tamper
                           </button>
                           <button className="btn-danger" style={{ padding: '6px 12px', fontSize: '12px' }} onClick={() => handleProcessQueuedMessage(item.id, 'DROP')}>

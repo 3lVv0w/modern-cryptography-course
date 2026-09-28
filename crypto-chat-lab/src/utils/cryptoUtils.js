@@ -121,22 +121,14 @@ export function rsaEncrypt(plaintext, publicKey) {
   const N = BigInt('0x' + publicKey.N);
   const e = BigInt('0x' + publicKey.e);
 
-  // Convert string to BigInt
   const encoder = new TextEncoder();
   const bytes = encoder.encode(plaintext);
-  let hexStr = '0x';
+  const cipherBlocks = [];
   for (let b of bytes) {
-    hexStr += b.toString(16).padStart(2, '0');
+    const cInt = modPowBigInt(BigInt(b), e, N);
+    cipherBlocks.push(cInt.toString(16));
   }
-  const mInt = BigInt(hexStr);
-
-  if (mInt >= N) {
-    // If message is too large for modulus, fallback chunking or simple error
-    throw new Error(`Message integer exceeds RSA modulus N (${N})! Try a shorter message.`);
-  }
-
-  const cInt = modPowBigInt(mInt, e, N);
-  return `RSA-CIPHER:${cInt.toString(16)}`;
+  return `RSA-CIPHER:${cipherBlocks.join('-')}`;
 }
 
 export function rsaDecrypt(ciphertextPayload, privateKey) {
@@ -144,25 +136,39 @@ export function rsaDecrypt(ciphertextPayload, privateKey) {
   if (!privateKey || !privateKey.N || !privateKey.d) return '[INVALID PRIVATE KEY]';
 
   const hexCipher = ciphertextPayload.replace('RSA-CIPHER:', '');
-  const cInt = BigInt('0x' + hexCipher);
   const N = BigInt('0x' + privateKey.N);
   const d = BigInt('0x' + privateKey.d);
 
-  const mInt = modPowBigInt(cInt, d, N);
-  
-  // Convert BigInt back to String
-  let hexStr = mInt.toString(16);
-  if (hexStr.length % 2 !== 0) hexStr = '0' + hexStr;
-  
-  const bytes = [];
-  for (let i = 0; i < hexStr.length; i += 2) {
-    bytes.push(parseInt(hexStr.substr(i, 2), 16));
+  if (hexCipher.includes('-')) {
+    const parts = hexCipher.split('-');
+    const bytes = [];
+    for (let p of parts) {
+      if (p) {
+        const cInt = BigInt('0x' + p);
+        const mInt = modPowBigInt(cInt, d, N);
+        bytes.push(Number(mInt));
+      }
+    }
+    const decoder = new TextDecoder();
+    return decoder.decode(new Uint8Array(bytes));
+  } else {
+    const cInt = BigInt('0x' + hexCipher);
+    const mInt = modPowBigInt(cInt, d, N);
+    
+    // Convert BigInt back to String
+    let hexStr = mInt.toString(16);
+    if (hexStr.length % 2 !== 0) hexStr = '0' + hexStr;
+    
+    const bytes = [];
+    for (let i = 0; i < hexStr.length; i += 2) {
+      bytes.push(parseInt(hexStr.substr(i, 2), 16));
+    }
+    const decoder = new TextDecoder();
+    return decoder.decode(new Uint8Array(bytes));
   }
-  const decoder = new TextDecoder();
-  return decoder.decode(new Uint8Array(bytes));
 }
 
-// Crack RSA Modulus for Instructor Dashboard via Fermat / Trial Factorization
+// Crack RSA Modulus for Instructor Dashboard via Fermat's Difference of Squares Factorization
 export function crackRSAModulus(N_hex, e_hex, ciphertextPayload) {
   if (!N_hex || !ciphertextPayload) return { bestText: '[NO PAYLOAD]', score: Infinity };
   
@@ -170,18 +176,56 @@ export function crackRSAModulus(N_hex, e_hex, ciphertextPayload) {
     const N = BigInt('0x' + N_hex);
     const e = BigInt('0x' + (e_hex || '10001'));
     
-    // Trial factor small/medium N
+    // Fermat's Factorization:
+    // N = a^2 - b^2 => check if a^2 - N is a square, starting from ceil(sqrt(N))
     let p = 0n;
     let q = 0n;
-    for (let i = 3n; i * i <= N; i += 2n) {
-      if (N % i === 0n) {
-        p = i;
-        q = N / i;
+    
+    const isqrt = (n) => {
+      if (n < 0n) return -1n;
+      if (n === 0n) return 0n;
+      let x0 = n / 2n;
+      if (x0 !== 0n) {
+        let x1 = (x0 + n / x0) / 2n;
+        while (x1 < x0) {
+          x0 = x1;
+          x1 = (x0 + n / x0) / 2n;
+        }
+        return x0;
+      }
+      return 1n;
+    };
+
+    let a = isqrt(N);
+    if (a * a < N) a += 1n;
+
+    for (let step = 0; step < 10000; step++) {
+      const b2 = a * a - N;
+      if (b2 < 0n) {
+        a += 1n;
+        continue;
+      }
+      const b = isqrt(b2);
+      if (b * b === b2) {
+        p = a - b;
+        q = a + b;
         break;
+      }
+      a += 1n;
+    }
+
+    // Fallback to trial division if Fermat didn't find within 10000 steps
+    if (p === 0n || p === 1n) {
+      for (let i = 3n; i * i <= N; i += 2n) {
+        if (N % i === 0n) {
+          p = i;
+          q = N / i;
+          break;
+        }
       }
     }
 
-    if (p === 0n) {
+    if (p === 0n || p === 1n) {
       return { bestText: '[RSA MODULUS TOO LARGE TO FACTOR ON CLIENT]', bestKey: `N=${N_hex}`, score: 999 };
     }
 

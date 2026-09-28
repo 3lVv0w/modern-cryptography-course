@@ -283,7 +283,7 @@ mosquitto_pub -h localhost -p 1883 -t "crypto/classroom/broadcast" -m '{"sender"
    - Selects **Cipher**: `Caesar Shift Cipher (Symmetric)`.
    - Sets **Shift Key**: `7`.
    - Sends: `"THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG AND ATTACKS AT MIDNIGHT"`
-   - Ciphertext generated: `AOL XBPJR IYVDU MVE QBTWZ VCLY AOL SHGF KVN HUK HAAHARZ HA TPKUPNOA`
+   - Ciphertext generated: `AOL XBPJR IYVDU MVE QBTWZ VCLY AOL SHGF KVN HUK HAAHJRZ HA TPKUPNOA`
 2. **Instructor Interception**:
    - The instructor opens the **Wiretap Transmissions** table and locates Alice's packet.
    - Clicks **"Crack Cipher"**.
@@ -300,7 +300,7 @@ mosquitto_pub -h localhost -p 1883 -t "crypto/classroom/broadcast" -m '{"sender"
    - Alice selects **Cipher**: `Vigenère Polyalphabetic (Symmetric)`.
    - Sets **Keyword**: `CRYPTO`.
    - Sends: `"DEFEND THE EAST WALL AT DAWN"`
-   - Ciphertext generated: `FVDUFR KVV VYLM NYNN NF UYKM`
+   - Ciphertext generated: `FVDTGR VYC TTGV NYAE OV UYLG`
 2. **Instructor Action**:
    - Inspect the wire log. Notice that letter frequency is obscured because the same plaintext letter (e.g., `'E'`) maps to multiple different ciphertext letters depending on its alignment with `C-R-Y-P-T-O`.
    - Demonstrate that if the key length is short and reused, the cipher degrades into parallel Caesar ciphers.
