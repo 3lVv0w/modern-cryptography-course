@@ -106,6 +106,15 @@
 
 ---
 
+## 📝 Class Assignment (Days 1–3 Synthesis)
+Following Day 3, students are assigned the comprehensive **Days 1–3 Class Assignment**:
+* **Specification:** [`assignments/ASSIGNMENT_DAYS_1_TO_3.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3.md) | [🇹🇭 ฉบับภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3_TH.md)
+* **Code Template:** [`assignments/assignment_days_1_to_3_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_days_1_to_3_student.py)
+* **Submission Validator:** [`assignments/submit_check.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/submit_check.py)
+* **Components:** Part 1 (Theory & Proofs - 30 pts) + Part 2 (Core Implementations - 40 pts) + Part 3 (Offensive Attacks - 30 pts) + Extra Credit (+15 pts).
+
+---
+
 # 📖 DAY 4: Message Integrity, Signatures, PKI, TLS 1.3 & Post-Quantum Crypto
 
 ### Morning Session: Theory & Mathematical Foundations (09:00 - 12:00)

@@ -1,9 +1,9 @@
 # 🎓 Modern Cryptography & Network Security Course Repository
 
-**Level:** University CS-4XX / ECE-4XX Undergraduate & Graduate Level  
-**Format:** 4-Day Intensive Workshop (Theory Lectures + 3-Tier Hands-On Labs + Full-Stack Interactive Chat Suite)  
-**Live Masterclass Presentation:** [https://crypto-masterclass-2026.web.app](https://crypto-masterclass-2026.web.app)  
-**Live Interactive Lab Client:** [https://crypto-masterclass-2026.web.app/lab](https://crypto-masterclass-2026.web.app/lab)  
+**Level:** University CS-4XX / ECE-4XX Undergraduate & Graduate Level
+**Format:** 4-Day Intensive Workshop (Theory Lectures + 3-Tier Hands-On Labs + Full-Stack Interactive Chat Suite)
+**Live Masterclass Presentation:** [https://crypto-masterclass-2026.web.app](https://crypto-masterclass-2026.web.app)
+**Live Interactive Lab Client:** [https://crypto-masterclass-2026.web.app/lab](https://crypto-masterclass-2026.web.app/lab)
 
 ---
 
@@ -17,6 +17,12 @@ modern-cryptography-course/
 │   ├── real_world_stories.md              # Historical & Real-World Exploits (Enigma, Stuxnet, Dual_EC_DRBG)
 │   ├── history_of_cryptography_and_enigma.md # History of classical ciphers and WW2 cryptanalysis
 │   └── history_of_cryptography_and_enigma.pdf # Supplementary historical lecture PDF
+│
+├── 📝 assignments/                        # University Graded Assignments & Projects
+│   ├── ASSIGNMENT_DAYS_1_TO_3.md          # Class Assignment Specification (Days 1–3: Theory, Labs & Exploits)
+│   ├── assignment_days_1_to_3_student.py  # Student Code Starter Template & Local Test Suite
+│   ├── REPORT_TEMPLATE.md                 # Formal Mathematical Proof & Attack Analysis Report
+│   └── submit_check.py                    # Pre-flight Automated Validator, Hasher & Packager
 │
 ├── 🖥️ presentation/                       # 53-Slide Interactive Masterclass Presentation
 │   ├── cryptography_for_beginners_presentation.html # Source HTML presentation (TH/EN bilingual, theme toggle)
@@ -88,9 +94,38 @@ python3 day4/lab_student.py
 ```
 
 ### 🎯 3-Tier Challenge System:
+
 * 🟢 **LEVEL 1 (Novice):** Basic algorithm implementations & fundamentals.
 * 🟡 **LEVEL 2 (Intermediate):** Statistical cryptanalysis, Index of Coincidence, AES pattern flaw checks, X.509 cert validation.
 * 🔴 **LEVEL 3 (Hardcore):** Vigenère breaker, Two-Time Pad crib dragging, GCM nonce reuse exploit, Fermat RSA factorization attack, and Capstone CTF solver.
+
+---
+
+## 📝 Class Assignment (Days 1–3)
+
+This class assignment synthesizes **Classical Cryptanalysis**, **Modern Symmetric AEAD**, and **Public-Key Cryptosystems**:
+
+* **Full Specification:** [`assignments/ASSIGNMENT_DAYS_1_TO_3.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3.md) | [🇹🇭 ฉบับภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3_TH.md)
+* **Student Starter Code:** [`assignments/assignment_days_1_to_3_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_days_1_to_3_student.py)
+* **Theory Report Template:** [`assignments/REPORT_TEMPLATE.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE.md) | [🇹🇭 เทมเพลตภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_TH.md)
+
+### 🏃 Quick Workflow for Students:
+
+```bash
+# 1. Complete implementation functions in:
+#    assignments/assignment_days_1_to_3_student.py
+
+# 2. Run local automated test suite:
+python3 assignments/assignment_days_1_to_3_student.py
+
+# 3. Write mathematical derivations & proofs in:
+#    assignments/REPORT.md (copied from REPORT_TEMPLATE.md)
+
+# 4. Run automated pre-flight validator, integrity hasher & packager:
+python3 assignments/submit_check.py --student-id "65070001" --name "Jane Doe"
+```
+
+The validator runs all unit tests, verifies report completeness, calculates SHA-256 integrity checksums, and produces `submission_<student_id>_days1_to_3.zip` ready for LMS or Git submission.
 
 ---
 
@@ -114,6 +149,7 @@ python3 start_lab.py
 Once started, open your browser to **`http://localhost:3005`**.
 
 ### 🌐 Hosting for Remote / Hybrid Participants via Ngrok:
+
 If you are the instructor / server owner and want external students to connect from their machines or smartphones:
 
 ```bash
@@ -124,7 +160,9 @@ cd crypto-chat-lab
 Ngrok provides an instant public HTTPS/WSS URL (`https://xxxx.ngrok-free.app`). Remote participants can open it directly or click **"Server: Localhost:3005"** in the app and paste the ngrok URL to connect over **WSS (WebSocket Secure)**.
 
 ### 📡 Multi-Protocol MQTT Inspection:
+
 The central server runs an embedded Aedes MQTT broker on TCP `1883` and `/mqtt` WebSockets:
+
 ```bash
 # Listen to live wire traffic across the network
 python3 crypto-chat-lab/mqtt_sniffer.py

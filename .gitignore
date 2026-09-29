@@ -133,7 +133,14 @@ temp/
 # ------------------------------------------------------------------------------
 .github/instructions/codacy.instructions.md
 
-# NOTE FOR COURSE INSTRUCTORS:
-# If you plan to make this repo public for students and want to withhold
-# exercise solutions, uncomment the following line:
-# **/exercises_instructor.py
+# ------------------------------------------------------------------------------
+# 10. Instructor Solutions & Answer Keys (EXCLUDED FROM STUDENT DISTRIBUTION)
+# ------------------------------------------------------------------------------
+instructor/
+instructor_solutions/
+**/instructor_solutions/
+**/assignment_*_solution.py
+assignments/*solution*.py
+**/exercises_instructor.py
+submission_*.zip
+
