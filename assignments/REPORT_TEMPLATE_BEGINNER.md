@@ -9,22 +9,22 @@
 ---
 
 ## 📑 Table of Contents
-1. [Part 1: Conceptual Foundations & Intuitive Cryptography (30 Points)](#part-1-conceptual-foundations--intuitive-cryptography-30-points)
+1. [Part 1: Conceptual Foundations & Intuitive Cryptography](#part-1-conceptual-foundations--intuitive-cryptography)
    - [Question 1.1: Classical Ciphers & Why Simple Shifts Fail](#question-11-classical-ciphers--why-simple-shifts-fail)
    - [Question 1.2: Symmetric vs. Asymmetric Encryption in Everyday Life](#question-12-symmetric-vs-asymmetric-encryption-in-everyday-life)
    - [Question 1.3: The AES Penguin Mystery & Why Cipher Modes Matter](#question-13-the-aes-penguin-mystery--why-cipher-modes-matter)
    - [Question 1.4: Hashing, Integrity, and The Avalanche Effect](#question-14-hashing-integrity-and-the-avalanche-effect)
-2. [Part 2: Code Implementation Summary (60 Points)](#part-2-code-implementation-summary-60-points)
-3. [Part 3: Detective Mission & Real-World Reflection (10 Points + 10 Bonus)](#part-3-detective-mission--real-world-reflection-10-points--10-bonus)
+2. [Part 2: Code Implementation Summary](#part-2-code-implementation-summary)
+3. [Part 3: Detective Mission & Real-World Reflection](#part-3-detective-mission--real-world-reflection)
    - [Mission 3.1: Intercepted Spy Transmission Decoded](#mission-31-intercepted-spy-transmission-decoded)
    - [Bonus Mission 3.2: The Butterfly Effect (Avalanche Analysis)](#bonus-mission-32-the-butterfly-effect-avalanche-analysis)
 4. [Honor Code Declaration](#honor-code-declaration)
 
 ---
 
-# Part 1: Conceptual Foundations & Intuitive Cryptography (30 Points)
+# Part 1: Conceptual Foundations & Intuitive Cryptography
 
-### Question 1.1: Classical Ciphers & Why Simple Shifts Fail (7 Points)
+### Question 1.1: Classical Ciphers & Why Simple Shifts Fail
 
 #### 1. The Exhaustive Key Search (Brute Force)
 *Why is the Caesar Cipher considered insecure for modern communication? How many possible shift keys exist in the English alphabet (A–Z), and how long would it take a human or computer to test every key?*
@@ -38,7 +38,7 @@
 
 ---
 
-### Question 1.2: Symmetric vs. Asymmetric Encryption in Everyday Life (8 Points)
+### Question 1.2: Symmetric vs. Asymmetric Encryption in Everyday Life
 
 #### 1. The Real-World Lockbox Analogy
 *Explain the fundamental difference between Symmetric and Asymmetric encryption using physical real-world analogies (e.g., a shared key safe vs. a public drop-box with an open padlock):*
@@ -58,7 +58,7 @@
 
 ---
 
-### Question 1.3: The AES Penguin Mystery & Why Cipher Modes Matter (7 Points)
+### Question 1.3: The AES Penguin Mystery & Why Cipher Modes Matter
 
 ```
    Original Image (Tux)       Encrypted with AES-ECB        Encrypted with AES-CBC/GCM
@@ -80,7 +80,7 @@
 
 ---
 
-### Question 1.4: Hashing, Integrity, and The Avalanche Effect (8 Points)
+### Question 1.4: Hashing, Integrity, and The Avalanche Effect
 
 #### 1. Encryption vs. Cryptographic Hashing
 *Many beginners confuse "Encryption" and "Hashing". Fill in the comparison table below:*
@@ -99,7 +99,7 @@
 
 ---
 
-# Part 2: Code Implementation Summary (60 Points)
+# Part 2: Code Implementation Summary
 
 Mark the status of each programming task in `assignments/assignment_beginner_student.py`:
 
@@ -119,9 +119,9 @@ Mark the status of each programming task in `assignments/assignment_beginner_stu
 
 ---
 
-# Part 3: Detective Mission & Real-World Reflection (10 Points + 10 Bonus)
+# Part 3: Detective Mission & Real-World Reflection
 
-### Mission 3.1: Intercepted Spy Transmission Decoded (10 Points)
+### Mission 3.1: Intercepted Spy Transmission Decoded
 
 You intercepted the following encrypted transmission sent by an operative:
 `"AOL ZLJYLA HNLUA PZ TLLAPUN HA TPKUPNOA"`
@@ -136,7 +136,7 @@ You intercepted the following encrypted transmission sent by an operative:
 
 ---
 
-### Bonus Mission 3.2: The Butterfly Effect (Avalanche Analysis) (+10 Points Extra Credit)
+### Bonus Mission 3.2: The Butterfly Effect (Avalanche Analysis)
 
 *If you implemented `measure_hash_avalanche()`, record your experimental results here:*
 

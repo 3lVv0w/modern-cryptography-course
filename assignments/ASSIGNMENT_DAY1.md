@@ -7,7 +7,6 @@
 * **Target Audience:** Undergraduate & Graduate CS/ECE Students, Cryptography & Cybersecurity Learners
 * **Focus Module:** Day 1 (Classical Cryptanalysis & Information Theory)
 * **Due Date:** Sunday 23:59:59 (7 Days from Assignment Date)
-* **Total Points:** 100 Points (+ 10 Points Extra Credit / Bonus)
 * **Starter Code:** [`assignments/assignment_day1_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_day1_student.py)
 * **Report Template:** [`assignments/REPORT_TEMPLATE_DAY1.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_DAY1.md) (or [`REPORT_TEMPLATE_DAY1_TH.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_DAY1_TH.md))
 * **Submission Validator:** [`assignments/submit_check_day1.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/submit_check_day1.py)
@@ -26,37 +25,13 @@ You will implement both approaches for **short tactical commands** and **long mu
 
 ---
 
-## 📋 Assignment Structure & Score Allocation (5 Questions)
-
-| Question | Topic & Deliverables | Method | Points |
-| :---: | :--- | :---: | :---: |
-| **Question 1** | **Short Message Processing Without Wheel Support** | Direct Modular Math ($\mathbb{Z}_{26}$) | **20 pts** |
-| | • `caesar_direct_encrypt(plaintext, shift)` | Python Function | 10 pts |
-| | • `caesar_direct_decrypt(ciphertext, shift)` | Python Function | 10 pts |
-| **Question 2** | **Short Message Processing With Wheel Support** | Mechanical Concentric Wheel Simulation | **20 pts** |
-| | • `CipherWheel` class implementation & ASCII dial rendering | Python Class | 10 pts |
-| | • `wheel_encrypt_short()` & `wheel_decrypt_short()` | Python Functions | 10 pts |
-| **Question 3** | **Long Message Processing & Equivalence Verification** | Stream Processing & Performance | **20 pts** |
-| | • `process_long_message_direct(text, shift, mode)` | Python Function | 10 pts |
-| | • `process_long_message_wheel(text, wheel, mode)` & Equivalence Check | Python Function & Report | 10 pts |
-| **Question 4** | **Progressive Rotor Advance (Stepping Wheel Cipher)** | Dynamic Polyalphabetic Stream | **20 pts** |
-| | • `progressive_wheel_encrypt(plaintext, initial_shift, step)` | Python Function | 10 pts |
-| | • `progressive_wheel_decrypt(ciphertext, initial_shift, step)` | Python Function | 10 pts |
-| **Question 5** | **Applied Cryptanalysis & Intercepted Cable Cracking** | Ciphertext-Only Attack (COA) | **20 pts** |
-| | • `crack_without_wheel(ciphertext, clue_word)` | Direct Math Loop | 10 pts |
-| | • `crack_with_wheel(ciphertext, wheel, clue_word)` | Wheel Rotation Scan | 10 pts |
-| **Bonus** | **Extra Credit: Keyed Scrambled Alphabet Wheel** | Custom Substituted Inner Disk | **+10 pts** |
-| **Total** | | | **100 pts (+10)** |
-
----
-
 # 📖 The 5 Assignment Questions in Detail
 
 Open [`assignments/assignment_day1_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_day1_student.py). Complete each section marked `# TODO: YOUR CODE HERE`.
 
 ---
 
-### 📝 Question 1: Short Message Processing Without Wheel Support (20 Points)
+### 📝 Question 1: Short Message Processing Without Wheel Support
 
 In this question, you will implement classical Caesar encryption and decryption without any wheel state, relying purely on modular arithmetic:
 
@@ -74,7 +49,7 @@ $$P_i = (C_i - \text{shift}) \bmod 26$$
 
 ---
 
-### 🎡 Question 2: Short Message Processing With Wheel Support (20 Points)
+### 🎡 Question 2: Short Message Processing With Wheel Support
 
 In 1467, Leon Battista Alberti introduced the first mechanical cipher disk: two concentric circular plates where an outer stationary disk (Plaintext: A–Z) aligns against an inner rotatable disk (Ciphertext: A–Z rotated by $k$).
 
@@ -100,7 +75,7 @@ In 1467, Leon Battista Alberti introduced the first mechanical cipher disk: two 
 
 ---
 
-### 📜 Question 3: Long Message Processing & Equivalence (20 Points)
+### 📜 Question 3: Long Message Processing & Equivalence
 
 In field operations, encryption must scale beyond a 3-word password to encrypt full reconnaissance reports and diplomatic dispatches containing multi-line paragraphs, numbers, and formatting.
 
@@ -118,7 +93,7 @@ We provide a benchmark historical text: an excerpt from Julius Caesar's *Gallic 
 
 ---
 
-### ⚙️ Question 4: Progressive Rotor Advance (Stepping Wheel Cipher) (20 Points)
+### ⚙️ Question 4: Progressive Rotor Advance (Stepping Wheel Cipher)
 
 The fatal flaw of static ciphers (both direct and static wheel) is **monoalphabetic frequency leakage**: the most frequent plaintext letter ('E') always turns into the exact same ciphertext letter.
 
@@ -140,7 +115,7 @@ Ciphertext: B   C   D   E   F   G   <-- Look! Identical letters produce unique o
 
 ---
 
-### 🕵️ Question 5: Applied Cryptanalysis & Intercepted Cable Cracking (20 Points)
+### 🕵️ Question 5: Applied Cryptanalysis & Intercepted Cable Cracking
 
 An enemy military wiretap intercepted this confidential diplomatic telegram:
 `"AOL JVUMLYLUJL PZ ZJOLKBSLK MVY TPKUPNOA HA AOL OPNI ZLJYLA IBURLY."`
@@ -158,7 +133,7 @@ Intelligence operatives know the telegram discusses a `"CONFERENCE"`.
 
 ---
 
-# 🌟 Bonus Question: Custom Scrambled Alphabet Wheel (+10 Extra Credit)
+# 🌟 Bonus Question: Custom Scrambled Alphabet Wheel
 
 In standard Caesar wheels, the alphabet on both rings is strictly A to Z in order. In keyed substitution wheels, the inner ring is scrambled using a secret keyword (e.g. `"SECRET"` $\to$ `"SECRTABDFGHIJKLMNOPQUVWXYZ"`).
 
@@ -186,34 +161,4 @@ The script will:
 3. Compute SHA-256 cryptographic submission receipts.
 4. Package your submission into `assignments/submission_<STUDENT_ID>_day1.zip`.
 
----
 
-## 📊 Comprehensive Grading Rubric
-
-```text
-Total Score: 100 Points (+10 Extra Credit)
-
-Question 1: Short Message Processing Without Wheel Support (20 Points)
-├── caesar_direct_encrypt(): 10 pts (Shift, casing, punctuation, wraparound)
-└── caesar_direct_decrypt(): 10 pts (Reversing shift cleanly)
-
-Question 2: Short Message Processing With Wheel Support (20 Points)
-├── CipherWheel class methods & ASCII dial rendering: 10 pts
-└── wheel_encrypt_short() & wheel_decrypt_short(): 10 pts
-
-Question 3: Long Message Processing & Equivalence (20 Points)
-├── process_long_message_direct(): 5 pts
-├── process_long_message_wheel(): 5 pts
-└── Exact Equivalence Verification & Written Performance Analysis: 10 pts
-
-Question 4: Progressive Rotor Stepping Wheel (20 Points)
-├── progressive_wheel_encrypt(): 10 pts (Letter advance, punct handling)
-└── progressive_wheel_decrypt(): 10 pts (Symmetric reverse step)
-
-Question 5: Applied Cryptanalysis & Cable Cracking (20 Points)
-├── crack_without_wheel(): 10 pts (Modular mathematical scan)
-└── crack_with_wheel(): 10 pts (Simulated mechanical dial scan)
-
-Bonus Question (+10 Extra Credit)
-└── ScrambledKeyedWheel implementation & Key space expansion proof: +10 pts
-```

@@ -10,17 +10,17 @@
 ---
 
 ## 📑 Table of Contents
-1. [Question 1: Short Message Processing Without Wheel Support](#question-1-short-message-processing-without-wheel-support-20-points)
-2. [Question 2: Short Message Processing With Wheel Support](#question-2-short-message-processing-with-wheel-support-20-points)
-3. [Question 3: Long Message Processing & Equivalence Verification](#question-3-long-message-processing--equivalence-verification-20-points)
-4. [Question 4: Progressive Rotor Stepping Wheel](#question-4-progressive-rotor-stepping-wheel-20-points)
-5. [Question 5: Applied Cryptanalysis & Intercepted Cable Cracking](#question-5-applied-cryptanalysis--intercepted-cable-cracking-20-points)
-6. [Bonus Question: Keyed Scrambled Alphabet Wheel (Optional)](#bonus-question-keyed-scrambled-alphabet-wheel-optional-10-bonus-pts)
+1. [Question 1: Short Message Processing Without Wheel Support](#question-1-short-message-processing-without-wheel-support)
+2. [Question 2: Short Message Processing With Wheel Support](#question-2-short-message-processing-with-wheel-support)
+3. [Question 3: Long Message Processing & Equivalence Verification](#question-3-long-message-processing--equivalence-verification)
+4. [Question 4: Progressive Rotor Stepping Wheel](#question-4-progressive-rotor-stepping-wheel)
+5. [Question 5: Applied Cryptanalysis & Intercepted Cable Cracking](#question-5-applied-cryptanalysis--intercepted-cable-cracking)
+6. [Bonus Question: Keyed Scrambled Alphabet Wheel (Optional)](#bonus-question-keyed-scrambled-alphabet-wheel-optional)
 7. [Honor Code Declaration](#honor-code-declaration)
 
 ---
 
-# Question 1: Short Message Processing Without Wheel Support (20 Points)
+# Question 1: Short Message Processing Without Wheel Support
 
 ### 1. Mathematical Formulation
 *Write out the modular arithmetic formula for encrypting and decrypting letters over the ring $\mathbb{Z}_{26}$. Explain how Python's `ord()` and `chr()` functions enable mapping characters to numbers and back.*
@@ -37,7 +37,7 @@
 
 ---
 
-# Question 2: Short Message Processing With Wheel Support (20 Points)
+# Question 2: Short Message Processing With Wheel Support
 
 ### 1. Alberti's Concentric Cipher Disk (1467)
 *Leon Battista Alberti invented the dual-disk cipher device consisting of an outer stationary ring and an inner rotatable ring. In your code, how does the `CipherWheel` class simulate this physical device?*
@@ -57,7 +57,7 @@
 
 ---
 
-# Question 3: Long Message Processing & Equivalence Verification (20 Points)
+# Question 3: Long Message Processing & Equivalence Verification
 
 ### 1. The Benchmark Message
 We tested your code on Julius Caesar's Gallic Wars dispatch excerpt (370 characters, multiple lines):
@@ -84,7 +84,7 @@ Emergency Dispatch 101: Roman legions advance to river crossing at 06:00!
 
 ---
 
-# Question 4: Progressive Rotor Stepping Wheel (20 Points)
+# Question 4: Progressive Rotor Stepping Wheel
 
 ### 1. The Monoalphabetic Frequency Flaw
 *In standard Caesar shift (static wheel), what happens to letter frequencies? Why is encrypting long text with a static shift vulnerable to simple frequency analysis (e.g. 'E' $\to$ 'H' every single time)?*
@@ -104,7 +104,7 @@ Emergency Dispatch 101: Roman legions advance to river crossing at 06:00!
 
 ---
 
-# Question 5: Applied Cryptanalysis & Intercepted Cable Cracking (20 Points)
+# Question 5: Applied Cryptanalysis & Intercepted Cable Cracking
 
 ### 1. Intercepted Transmission
 `"AOL JVUMLYLUJL PZ ZJOLKBSLK MVY TPKUPNOA HA AOL OPNI ZLJYLA IBURLY."`
@@ -122,7 +122,7 @@ Emergency Dispatch 101: Roman legions advance to river crossing at 06:00!
 
 ---
 
-# Bonus Question: Keyed Scrambled Alphabet Wheel (Optional +10 Bonus Pts)
+# Bonus Question: Keyed Scrambled Alphabet Wheel (Optional)
 
 *If you implemented `ScrambledCipherWheel`:*
 * **Keyword Used:** `"SECRET"`
