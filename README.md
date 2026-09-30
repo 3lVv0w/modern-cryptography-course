@@ -19,10 +19,18 @@ modern-cryptography-course/
 │   └── history_of_cryptography_and_enigma.pdf # Supplementary historical lecture PDF
 │
 ├── 📝 assignments/                        # University Graded Assignments & Projects
-│   ├── ASSIGNMENT_DAYS_1_TO_3.md          # Class Assignment Specification (Days 1–3: Theory, Labs & Exploits)
-│   ├── assignment_days_1_to_3_student.py  # Student Code Starter Template & Local Test Suite
-│   ├── REPORT_TEMPLATE.md                 # Formal Mathematical Proof & Attack Analysis Report
-│   └── submit_check.py                    # Pre-flight Automated Validator, Hasher & Packager
+│   ├── ASSIGNMENT_DAY1.md                 # Day 1 Focus Spec (EN - 5 Questions: Short/Long, With/Without Wheel)
+│   ├── ASSIGNMENT_DAY1_TH.md              # Day 1 Focus Spec (TH - ฉบับภาษาไทยเน้นเนื้อหาวันที่ 1 พร้อม 5 คำถาม)
+│   ├── assignment_day1_student.py         # Day 1 Student Starter Code (CipherWheel & Stream processing)
+│   ├── REPORT_TEMPLATE_DAY1.md            # Day 1 Report Template (EN)
+│   ├── REPORT_TEMPLATE_DAY1_TH.md         # Day 1 Report Template (TH)
+│   ├── submit_check_day1.py               # Day 1 Pre-flight Validator & Packager
+│   ├── ASSIGNMENT_BEGINNER.md             # Beginner Assignment Spec (EN - Ciphers, XOR, AES-GCM, DH, RSA)
+│   ├── ASSIGNMENT_BEGINNER_TH.md          # Beginner Assignment Spec (TH - ฉบับภาษาไทยสำหรับผู้เริ่มต้น)
+│   ├── assignment_beginner_student.py     # Beginner Student Code Starter & Test Suite
+│   ├── REPORT_TEMPLATE_BEGINNER.md        # Beginner Theory & Concept Report Template (EN)
+│   ├── REPORT_TEMPLATE_BEGINNER_TH.md     # Beginner Theory & Concept Report Template (TH)
+│   └── submit_check_beginner.py           # Beginner Pre-flight Validator & Packager
 │
 ├── 🖥️ presentation/                       # 53-Slide Interactive Masterclass Presentation
 │   ├── cryptography_for_beginners_presentation.html # Source HTML presentation (TH/EN bilingual, theme toggle)
@@ -101,31 +109,50 @@ python3 day4/lab_student.py
 
 ---
 
-## 📝 Class Assignment (Days 1–3)
+## 📝 Class Assignments & Projects
 
-This class assignment synthesizes **Classical Cryptanalysis**, **Modern Symmetric AEAD**, and **Public-Key Cryptosystems**:
+The course offers modular, tiered assignment tracks depending on student background and curriculum goals:
 
-* **Full Specification:** [`assignments/ASSIGNMENT_DAYS_1_TO_3.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3.md) | [🇹🇭 ฉบับภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAYS_1_TO_3_TH.md)
-* **Student Starter Code:** [`assignments/assignment_days_1_to_3_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_days_1_to_3_student.py)
-* **Theory Report Template:** [`assignments/REPORT_TEMPLATE.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE.md) | [🇹🇭 เทมเพลตภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_TH.md)
+### ⚙️ Day 1 Focus Assignment: Wheel vs. No-Wheel Cryptography (5 Questions)
+Specifically crafted to bridge the physical, mechanical world of Alberti/Caesar concentric cipher wheels with the discrete mathematical world of modular arithmetic over $\mathbb{Z}_{26}$. Students implement both approaches from scratch, prove their computational equivalence across short and long classical texts, build progressive rotor advances, and execute brute-force cryptanalysis.
 
-### 🏃 Quick Workflow for Students:
+* **Question 1 (20 pts):** Direct Modular Arithmetic ($C = (P + k) \bmod 26$) on Short Messages (Without Wheel)
+* **Question 2 (20 pts):** Concentric Wheel Simulation & ASCII Dial Visualization on Short Messages (With Wheel)
+* **Question 3 (20 pts):** Long Message Stream Processing & Equivalence Proof (Gallic Wars Excerpt)
+* **Question 4 (20 pts):** Progressive Stepping Wheel (Polyalphabetic Rotor Advance)
+* **Question 5 (20 pts):** Intercepted Cable Cryptanalysis (Ciphertext-Only Attack Brute-Force Cracking)
+* **Bonus (+10 pts):** Keyed Scrambled Alphabet Wheel ($26!$ Key Space)
+
+* 🌐 **Full Specification:** [`assignments/ASSIGNMENT_DAY1.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAY1.md) | [🇹🇭 ฉบับภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_DAY1_TH.md)
+* 💻 **Student Starter Code:** [`assignments/assignment_day1_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_day1_student.py)
+* 📝 **Concept Report Template:** [`assignments/REPORT_TEMPLATE_DAY1.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_DAY1.md) | [🇹🇭 เทมเพลตภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_DAY1_TH.md)
+* 🚀 **Pre-flight Checker & Packager:** [`assignments/submit_check_day1.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/submit_check_day1.py)
 
 ```bash
-# 1. Complete implementation functions in:
-#    assignments/assignment_days_1_to_3_student.py
+# 1. Run local self-test suite:
+python3 assignments/assignment_day1_student.py
 
-# 2. Run local automated test suite:
-python3 assignments/assignment_days_1_to_3_student.py
-
-# 3. Write mathematical derivations & proofs in:
-#    assignments/REPORT.md (copied from REPORT_TEMPLATE.md)
-
-# 4. Run automated pre-flight validator, integrity hasher & packager:
-python3 assignments/submit_check.py --student-id "65070001" --name "Jane Doe"
+# 2. Run automated pre-flight checker & packager:
+python3 assignments/submit_check_day1.py --student-id "65070001" --name "Jane Doe"
 ```
 
-The validator runs all unit tests, verifies report completeness, calculates SHA-256 integrity checksums, and produces `submission_<student_id>_days1_to_3.zip` ready for LMS or Git submission.
+---
+
+### 🌟 Track A: Beginner / Introductory Assignment (CS-1XX / ECE-1XX)
+Designed for **beginners, first/second-year students, and cybersecurity novices**. Focuses on intuition, physical lockbox analogies, visual explanations, and core cryptographic primitives using clean Python code without daunting mathematical proofs.
+
+* 🌐 **Full Specification:** [`assignments/ASSIGNMENT_BEGINNER.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_BEGINNER.md) | [🇹🇭 ฉบับภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/ASSIGNMENT_BEGINNER_TH.md)
+* 💻 **Student Starter Code:** [`assignments/assignment_beginner_student.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/assignment_beginner_student.py)
+* 📝 **Concept Report Template:** [`assignments/REPORT_TEMPLATE_BEGINNER.md`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_BEGINNER.md) | [🇹🇭 เทมเพลตภาษาไทย](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/REPORT_TEMPLATE_BEGINNER_TH.md)
+* 🚀 **Pre-flight Checker & Packager:** [`assignments/submit_check_beginner.py`](file:///Users/kvivek/Documents/modern-cryptography-course/assignments/submit_check_beginner.py)
+
+```bash
+# 1. Run local self-test suite:
+python3 assignments/assignment_beginner_student.py
+
+# 2. Run automated pre-flight checker & packager:
+python3 assignments/submit_check_beginner.py --student-id "65070001" --name "Jane Doe"
+```
 
 ---
 
